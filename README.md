@@ -1,5 +1,6 @@
 # planeApp
 
+Create ```db.properties```
 Launch from ```planeApp.views.Main```
 
 TODO:
