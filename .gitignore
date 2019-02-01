@@ -1,0 +1,7 @@
+.settings
+bin/
+
+*.class
+
+hs_err_pid*
+db.properties
