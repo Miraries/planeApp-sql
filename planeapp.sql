@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2018 at 09:45 AM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: Feb 02, 2019 at 07:11 PM
+-- Server version: 10.1.32-MariaDB
+-- PHP Version: 7.2.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -53,7 +53,10 @@ INSERT INTO `city` (`id`, `name`, `country`, `lat`, `lon`) VALUES
 (13, 'Beijing', 'China', 39.93, 116.11),
 (14, 'Mumbai', 'India', 19.08, 72.74),
 (15, 'Nairobi', 'Kenya', -1.30, 36.77),
-(16, 'Lima', 'Peru', -12.05, -77.06);
+(16, 'Lima', 'Peru', -12.05, -77.06),
+(313, 'Niksic', 'Montenegro', 42.77, 18.91),
+(314, 'Budapest', 'Hungary', 47.49, 19.06),
+(315, 'Prague', 'Chezchia', 50.07, 14.43);
 
 -- --------------------------------------------------------
 
@@ -72,14 +75,18 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `name`, `country`) VALUES
-(1, 'Montenegro Airlines', 'Montenegro'),
-(2, 'United Airlines', 'USA'),
 (3, 'Aeroflot', 'Russia'),
-(4, 'United Continental', 'USA'),
-(5, 'Mesa Airlines', 'USA'),
 (6, 'Australian Airlines', 'Austria'),
+(234, 'Berlin Air', 'Germany'),
+(8, 'Jet Airways', 'India'),
+(5, 'Mesa Airlines', 'USA'),
+(1, 'Montenegro Airlines', 'Montenegro'),
+(261, 'Rossiya', 'Russia'),
+(236, 'Ryan Air', 'Germany'),
 (7, 'Swiss', 'Switzerland'),
-(8, 'Jet Airways', 'India');
+(2, 'United Airlines', 'USA'),
+(4, 'United Continental', 'USA'),
+(235, 'Wizz Air', 'Germany');
 
 -- --------------------------------------------------------
 
@@ -103,17 +110,15 @@ CREATE TABLE `flight` (
 --
 
 INSERT INTO `flight` (`id`, `origin`, `destination`, `company`, `plane`, `takeoff`, `duration`, `price`) VALUES
-(1, 1, 2, 3, 3, '2018-01-12 05:15:00', 180, 350),
-(2, 2, 3, 2, 2, '2018-02-12 15:35:00', 300, 250),
-(3, 3, 4, 1, 1, '2018-03-12 12:45:00', 400, 400),
-(4, 4, 5, 3, 3, '2018-04-12 16:55:00', 450, 500),
-(5, 5, 6, 2, 2, '2018-05-12 05:25:00', 310, 550),
-(6, 6, 7, 1, 1, '2018-06-12 03:05:00', 120, 600),
-(7, 7, 8, 3, 3, '2018-07-12 01:15:00', 340, 200),
-(8, 8, 1, 2, 2, '2018-08-12 08:35:00', 530, 250),
-(9, 1, 3, 2, 2, '2018-09-12 11:50:00', 240, 600),
-(10, 2, 4, 1, 1, '2018-10-12 22:40:00', 210, 750),
-(11, 3, 5, 3, 3, '2018-11-12 21:20:00', 360, 800);
+(121, 315, 3, 3, 9, '2019-01-12 17:05:00', 0, 100),
+(122, 314, 4, 234, 4, '2019-01-17 18:30:00', 0, 120),
+(123, 3, 315, 235, 2, '2019-01-22 15:20:00', 0, 40),
+(124, 4, 313, 236, 170, '2019-01-27 11:30:00', 0, 80),
+(125, 313, 2, 3, 171, '2019-02-01 01:32:00', 0, 200),
+(131, 2, 314, 234, 177, '2019-02-06 04:56:00', 0, 120),
+(150, 2, 3, 236, 170, '2019-01-17 18:30:00', 0, 80),
+(151, 313, 4, 3, 171, '2019-01-22 15:20:00', 0, 200),
+(152, 314, 315, 234, 177, '2019-01-27 11:30:00', 0, 120);
 
 -- --------------------------------------------------------
 
@@ -141,7 +146,10 @@ INSERT INTO `plane` (`id`, `name`, `seats`) VALUES
 (7, 'Antonov An-124', 454),
 (8, 'Boeing 747-400', 234),
 (9, 'Boeing 747-8i', 532),
-(10, 'Antonov AN-225', 425);
+(170, 'Boeing 747-9i', 153),
+(171, 'Airbus A540-200', 253),
+(177, 'Airbus A50', 315),
+(194, 'Airbus Z32', 568);
 
 --
 -- Indexes for dumped tables
@@ -151,19 +159,22 @@ INSERT INTO `plane` (`id`, `name`, `seats`) VALUES
 -- Indexes for table `city`
 --
 ALTER TABLE `city`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`,`country`);
 
 --
 -- Indexes for table `company`
 --
 ALTER TABLE `company`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`,`country`);
 
 --
 -- Indexes for table `flight`
 --
 ALTER TABLE `flight`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `origin_2` (`origin`,`destination`,`company`,`plane`,`takeoff`,`duration`),
   ADD KEY `company` (`company`),
   ADD KEY `destination` (`destination`),
   ADD KEY `origin` (`origin`),
@@ -173,7 +184,8 @@ ALTER TABLE `flight`
 -- Indexes for table `plane`
 --
 ALTER TABLE `plane`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -183,25 +195,25 @@ ALTER TABLE `plane`
 -- AUTO_INCREMENT for table `city`
 --
 ALTER TABLE `city`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
 
 --
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
 
 --
 -- AUTO_INCREMENT for table `flight`
 --
 ALTER TABLE `flight`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT for table `plane`
 --
 ALTER TABLE `plane`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- Constraints for dumped tables
